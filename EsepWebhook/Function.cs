@@ -20,6 +20,10 @@ public class Function
     {
         context.Logger.LogLine($"Received: {input}");
         dynamic json = JsonConvert.DeserializeObject<dynamic>(input.ToString());
+        if (json.issue == null)
+        {
+            return "Ignored event without an issue.";
+        }
         string issueUrl = (string)json.issue.html_url;
         string payload = JsonConvert.SerializeObject(new { text = $"Issue Created: {issueUrl}" });
         var client = new HttpClient();
